@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1> All the requests are below</h1>
+
+{% if vehicles %}
+<table class="table table-striped table-hover table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">Registration No.</th>
+
+      <th scope="col">Created At</th>
+      
+      <th scope="col">Request</th>
+      <!-- <th scope="col">Request Alert</th> -->
+
+    </tr>
+  </thead>
+  <tbody>
+    
+
+	{% for vehicle in vehicles %}
+		<tr>
+
+			<td><a href="{% url 'vehicle-details' vehicle.reg_no %}">{{ vehicle.reg_no }}</a></td>
+			
+			<td>{{ vehicle.reg_st_date }}</td>
+			<td>{{ vehicle.request_with_payment }}</td>
+
+			
+		</tr>
+	{% endfor %}
+
+{% else %}
+<h2>There is not anymore requests for Now.... Have a Good Day! </h2>
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<h1> Welcome to BRTA</h1>
+{% if vehicles %}
+<table class="table table-striped table-hover table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">Owner License</th>
+      <th scope="col">Registration No.</th>
+      <th scope="col">Seats</th>
+      <th scope="col">Fuel Type</th>
+      <th scope="col">Engine CC</th>
+      <th scope="col">Vehicle Class</th>
+      
+      <th scope="col">Engine_no</th>
+      <!-- <th scope="col">Request Alert</th> -->
+
+    </tr>
+  </thead>
+  <tbody>
+    
+
+	{% for vehicle in vehicles %}
+		<tr>
+			<td><a href="{% url 'client-details' vehicle.client_id %}">{{ vehicle.client_id }}</a></td>
+			<td><a href="{% url 'vehicle-details' vehicle.id %}?q={{ vehicle.id }}">{{ vehicle.id }}</a></td>
+			<td>{{ vehicle.seat }}</td>
+			<td>{{ vehicle.fuel_type }}</td>
+			<td>{{ vehicle.engine_cc }}</td>
+			<td>{{ vehicle.vehicle_class }}</td>
+			<td>{{ vehicle.engine_no }}</td>
+
+			
+		</tr>
+	{% endfor %}
+
+{% endif %}
+
+	
+	  </tbody>
+	</table>
+
+{% else %}
+
+<h1> Login </h1>
+
+<form method="POST" action="{% url 'home' %}">
+    {% csrf_token %}
+    <form>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Admin ID/ License Number</label>
+          <input type="text" class="form-control"  name="userId" >
+
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          <input type="password" class="form-control" name="password" >
+        </div>
+       
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+<div class="card">
+  <div class="card-header"><strong>
+    	Client Name:  {{ client }}</strong>
+  </div>
+  <div class="card-body">
+
+
+
+<p class="card-text">
+<strong>Registraion No:  </strong>{{ vehicle_record.reg_no }}</p>
+
+<p class="card-text">
+<strong>Fitness start: </strong>{{ vehicle_record.fitness_st_date }}
+</p>
+
+<p class="card-text">
+<strong>Fitness End: </strong>{{ vehicle_record.fitness_exp_date }}</p>
+
+<p class="card-text">
+<strong>Taxtoken Ends: </strong>{{ vehicle_record.taxtoken_up_to }}</p>
+
+<p class="card-text">
+<strong>insurance start: </strong>{{ vehicle_record.insurance_st_date }}</p>
+
+<p class="card-text">
+<strong>insurance End: </strong>{{ vehicle_record.insurance_exp_date }}</p>
+<p class="card-text">
+<strong>Color: </strong>{{ vehicle_record.color }}</p>
+
+<p class="card-text">
+<strong>Registration Start: </strong>{{ vehicle_record.reg_st_date }}</p>
+
+<p class="card-text"><strong>Registraion End: </strong>{{ vehicle_record.reg_exp_date }}</p>
+
+<div class="p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3">
+  <strong>Request_with_payment: </strong>
+  <p class="card-text">{{ vehicle_record.request_with_payment }}  </p>
+</div>
+
+ 
+  </div>
+</div>
+
+<br/><br/>
+
+
+{% if user.is_staff %}
+
+<a href="{% url 'delete_record' vehicle_record.reg_no %}" class="btn btn-danger">Delete</a>
+
+<a href="{% url 'update_record' vehicle_record.reg_no %}" class="btn btn-primary">Update</a>
+<br/>
+
+<div>
+  <h2>Price Chart for This Vehicle:</h2>
+  <br>
+  <strong>Fitness upgrade(1year+)    fee:   </strong>{{ price_chart.fitness_rate }}</p>  
+  <strong>Taxtoken  upgrade(1year+)  fee:  </strong>{{ price_chart.taxtoken_rate }}</p>  
+  <strong>Insurance  upgrade(1year+) fee: </strong>{{ price_chart.insurance_rate }}</p>  
+  <strong>Color change fee:               </strong>{{ price_chart.color_rate }}</p>  
+
+</div>
+<br>
+{% else %}
+
+<div>
+  <h2>Price Chart for This Vehicle</h2>
+  <br>
+  <strong>Fitness upgrade(1year+)    fee:   </strong>{{ price_chart.fitness_rate }}</p>  
+  <strong>Taxtoken  upgrade(1year+)  fee:  </strong>{{ price_chart.taxtoken_rate }}</p>  
+  <strong>Insurance  upgrade(1year+) fee: </strong>{{ price_chart.insurance_rate }}</p>  
+  <strong>Color change fee:               </strong>{{ price_chart.color_rate }}</p>  
+
+</div>
+
+<br>
+<a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >Request for Changes</button>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Request for Changes</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+
+        <form method="POST" action="">
+          {% csrf_token %}
+          
+          <form>
+            <input type="checkbox" id="vehicle11" name="fitness" value="{{ price_chart.fitness_rate }}">
+            <label for="vehicle11">Fitness upgrade(1year+) fee: {{ price_chart.fitness_rate }}</label><br>
+            <input type="checkbox" id="vehicle1" name="taxtoken" value="{{ price_chart.taxtoken_rate }}">
+            <label for="vehicle1"> Taxtoken upgrade(1year+) fee: {{ price_chart.taxtoken_rate }} </label><br>
+            <input type="checkbox" id="vehicle2" name="insurance" value="{{ price_chart.insurance_rate }}">
+            <label for="vehicle2"> Change Insurance(1year+) Fee: {{ price_chart.insurance_rate }} </label><br>
+            <input type="checkbox" id="vehicle3" name="color" value="{{ price_chart.color_rate }}">
+            <label for="vehicle3"> Change Color Fee: {{ price_chart.color_rate }} </label><br>                                                                  
+          
+            <label for="message-text" class="col-form-label">Only write the name of the Color if color change required:</label>
+            <textarea class="form-control" name="message" id="message"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Request and Pay</button>
+          </form> 
+
+        </form>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+{% endif %}
+<br>
+<br>
+<br>
+<br>
+
+
+		
+
+{% endblock %}
