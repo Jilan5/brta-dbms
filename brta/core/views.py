@@ -7,8 +7,6 @@ from .models import User, Vehicle_fixed_detail, Vehicle_variable_details, PriceC
 # Create your views here.
 
 def home(request):
-
-
     if request.method == 'POST':
         userId =  request.POST['userId']
         password = request.POST['password']
@@ -29,8 +27,6 @@ def home(request):
                 vehicle = Vehicle_fixed_detail.objects.filter(client_id=user.license_no)
                 return render(request, 'home.html', {'vehicles':vehicle})
 
-
-                
             messages.success(request, 'Successfully Logged In!')
             return render(request, 'home.html', {})
         else:
@@ -97,7 +93,7 @@ def register_vehicle(request):
         else:
             vform = VehicleForm()
             return render(request, 'register-vehicle.html', {'form':vform})
-    return render(request, 'register-vehicle.html', {'form':vform})
+    # return render(request, 'register-vehicle.html', {'form':vform})
 
 
 
@@ -117,7 +113,7 @@ def vehicle_variable_details(request, pk):
                  old= vehicle_record.request_with_payment+'\n'
             else:
                  old=""
-            # += request.POST['message']+'-'+request.POST['color']+'\n'
+            
             if dic.get('fitness')!= None:
                  old += 'Paid:'+dic.get('fitness')+'--Update Fitness(1year)<br> '
             if dic.get('taxtoken')!= None:
@@ -134,21 +130,20 @@ def vehicle_variable_details(request, pk):
         else:
              
             return render(request, 'vehicle_details.html', {'vehicle_record':vehicle_record,'client':client[0],'price_chart':price_chart})
-    
-        
+
     else:
         messages.success(request, "You Must Be Logged In To View That Page...")
         return redirect('home')
 
 
 def delete_record(request, pk):
-	if request.user.is_authenticated:
-		delete_it = Vehicle_fixed_detail.objects.get(id=pk)
-		delete_it.delete()
+	if request.user.is_staff:
+		vehicle = Vehicle_fixed_detail.objects.get(id=pk)
+		vehicle.delete()
 		messages.success(request, "Record Deleted Successfully...")
 		return redirect('home')
 	else:
-		messages.success(request, "You Must Be Logged In To Do That...")
+		messages.success(request, "You Must Be An Admin...")
 		return redirect('home')
 
 

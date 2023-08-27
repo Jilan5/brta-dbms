@@ -72,7 +72,7 @@ class Vehicle_variable_details(models.Model):
     color= models.CharField(max_length=10, null=True,blank=True)
     reg_st_date= models.DateField(null=True,blank=True)
     reg_exp_date= models.DateField(null=True,blank=True)
-    request_with_payment= models.CharField(max_length=200, null=True,blank=True)
+    request_with_payment= models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         return str(self.reg_no)
